@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -32,6 +31,9 @@ public class Screen {
     List<Alien> aliens = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
 
+    private final KeyEventHandler keyEventHandler;
+    private final CollisionHandler collisionHandler;
+
     // Getter for singleton instance
     public static final Screen getInstance() {
         return instance;
@@ -39,6 +41,10 @@ public class Screen {
 
     // Constructor
     private Screen() {
+        keyEventHandler = new KeyEventHandler(this);
+        collisionHandler = new CollisionHandler(bullets, aliens);
+        keyEventHandler.setNext(collisionHandler);
+
         initializeFrame();
         loadImages();
         createAliens();
@@ -50,7 +56,7 @@ public class Screen {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent ke) {
-                handleKeyEvent(ke);
+                keyEventHandler.handle(ke);
                 return true;
             }
         });
@@ -103,30 +109,13 @@ public class Screen {
         }).start();
     }
 
-    // Handle key events
-    private void handleKeyEvent(KeyEvent ke) {
-        switch (ke.getID()) {
-            case KeyEvent.KEY_PRESSED:
-                if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
-                    movePlayerLeft();
-                }
-                if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    movePlayerRight();
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-
     // Move player left
-    private void movePlayerLeft() {
+    public void movePlayerLeft() {
         playerX -= 10;
     }
 
     // Move player right
-    private void movePlayerRight() {
+    public void movePlayerRight() {
         playerX += 10;
     }
 
@@ -141,7 +130,7 @@ public class Screen {
         public final void paint(Graphics g) {
             clearScreen(g);
             drawAliens(g);
-            drawBullets(g);
+            collisionHandler.handle(g);
             drawPlayer(g);
         }
 
@@ -167,43 +156,6 @@ public class Screen {
             if (edgeCollision) {
                 for (Alien alien : aliens) {
                     alien.reverseDirection();
-                }
-            }
-        }
-
-        // Draw bullets
-        private void drawBullets(Graphics g) {
-            Iterator<Bullet> bulletIterator = bullets.iterator();
-            while (bulletIterator.hasNext()) {
-                Bullet bullet = bulletIterator.next();
-                bullet.move();
-                if (bullet.isOffScreen()) {
-                    bulletIterator.remove();
-                    continue;
-                }
-
-                boolean hit = false;
-                Iterator<Alien> alienIterator = aliens.iterator();
-                int newWidth = alienImg.getWidth() / 10;
-                int newHeight = alienImg.getHeight() / 10;
-                while (alienIterator.hasNext()) {
-                    Alien alien = alienIterator.next();
-                    if (bullet.x < alien.x + newWidth &&
-                        bullet.x + bullet.image.getWidth() / 2 > alien.x &&
-                        bullet.y < alien.y + newHeight &&
-                        bullet.y + bullet.image.getHeight() / 2 > alien.y) {
-                        alienIterator.remove();
-                        hit = true;
-                        break;
-                    }
-                }
-
-                if (hit) {
-                    bulletIterator.remove();
-                } else {
-                    int bulletWidth = bullet.image.getWidth() / 2;
-                    int bulletHeight = bullet.image.getHeight() / 2;
-                    g.drawImage(bullet.image, bullet.x, bullet.y, bulletWidth, bulletHeight, null);
                 }
             }
         }
