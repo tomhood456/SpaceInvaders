@@ -1,12 +1,11 @@
 package spaceinvaders;
 
-import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.List;
 
 public class CollisionHandler implements Handler {
-    private List<Bullet> bullets;
-    private List<Alien> aliens;
+    private final List<Bullet> bullets;
+    private final List<Alien> aliens;
     private Handler next;
 
     public CollisionHandler(List<Bullet> bullets, List<Alien> aliens) {
@@ -20,40 +19,30 @@ public class CollisionHandler implements Handler {
 
     @Override
     public void handle(Object request) {
-        Graphics g = (Graphics) request;
-
         Iterator<Bullet> bulletIterator = bullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
             bullet.move();
             if (bullet.isOffScreen()) {
-                bulletIterator.remove();
-                continue;
-            }
-
-            boolean hit = false;
-            Iterator<Alien> alienIterator = aliens.iterator();
-            while (alienIterator.hasNext()) {
-                Alien alien = alienIterator.next();
-                if (bullet.x < alien.x + alien.image.getWidth() / 10 &&
-                    bullet.x + bullet.image.getWidth() / 2 > alien.x &&
-                    bullet.y < alien.y + alien.image.getHeight() / 10 &&
-                    bullet.y + bullet.image.getHeight() / 2 > alien.y) {
-                    alienIterator.remove();
-                    hit = true;
-                    break;
-                }
-            }
-
-            if (hit) {
-                bulletIterator.remove();
+                bulletIterator.remove();  // Remove bullet if it's off-screen
             } else {
-                g.drawImage(bullet.image, bullet.x, bullet.y, bullet.image.getWidth() / 2, bullet.image.getHeight() / 2, null);
+                Iterator<Alien> alienIterator = aliens.iterator();
+                while (alienIterator.hasNext()) {
+                    Alien alien = alienIterator.next();
+                    if (bullet.x < alien.x + alien.image.getWidth() / 10 &&
+                        bullet.x + bullet.image.getWidth() / 2 > alien.x &&
+                        bullet.y < alien.y + alien.image.getHeight() / 10 &&
+                        bullet.y + bullet.image.getHeight() / 2 > alien.y) {
+                        alienIterator.remove();  // Remove alien if hit
+                        bulletIterator.remove();  // Remove bullet on collision
+                        break;
+                    }
+                }
             }
         }
 
         if (next != null) {
-            next.handle(request);
+            next.handle(request);  // Pass to the next handler if exists
         }
     }
 }

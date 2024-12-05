@@ -1,13 +1,14 @@
 package spaceinvaders;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class KeyEventHandler implements Handler {
-    private Screen screen;
+final class KeyEventHandler extends KeyAdapter implements Handler {
+    private final GameManager gameManager;
     private Handler next;
 
-    public KeyEventHandler(Screen screen) {
-        this.screen = screen;
+    public KeyEventHandler(GameManager gameManager) {
+        this.gameManager = gameManager;
     }
 
     public void setNext(Handler next) {
@@ -16,18 +17,18 @@ public class KeyEventHandler implements Handler {
 
     @Override
     public void handle(Object request) {
-        KeyEvent ke = (KeyEvent) request;
-        if (ke.getID() == KeyEvent.KEY_PRESSED) {
-            if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
-                screen.movePlayerLeft();
-            }
-            if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
-                screen.movePlayerRight();
-            }
-        } else {
-            if (next != null) {
-                next.handle(request);
-            }
+        // This method is not used for key events
+        if (next != null) {
+            next.handle(request);
+        }
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
+            gameManager.movePlayerLeft();
+        } else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
+            gameManager.movePlayerRight();
         }
     }
 }

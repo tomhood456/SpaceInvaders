@@ -1,28 +1,30 @@
 package spaceinvaders;
 
 public class Main extends Thread {
-    Screen screen = null;
+    private Screen screen;
+    private GameManager gameManager;
+
+    public Main(GameManager gameManager) {
+        this.gameManager = gameManager;
+        screen = Screen.getInstance(gameManager);
+        screen.setVisible(true);
+    }
 
     public void run() {
         while (true) {
             try {
-                synchronized (this) {
-                    wait(1000);
-                }
-                screen.repaint();
+                gameManager.updateGame(); // Update game state
+                screen.repaint(); // Repaint the screen
+                Thread.sleep(16); // Approximately 60 FPS
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public Main() {
-        screen = Screen.getInstance();
-        screen.setVisible(true);
-    }
-
     public static void main(String[] args) {
-        Main main = new Main();
+        GameManager gameManager = new GameManager();
+        Main main = new Main(gameManager);
         main.start();
     }
 }
