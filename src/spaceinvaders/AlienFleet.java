@@ -1,6 +1,6 @@
 package spaceinvaders;
 
-import java.awt.image.BufferedImage; // Add this import
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,42 +9,52 @@ public class AlienFleet {
     private int gameWidth;
     private int rowHeight = 50; // Define the row height
     private int playerY; // Player's y position
-    private BufferedImage alienImg; // Add the alien image
     private AlienFactory alienFactory; // Add an instance of AlienFactory
+    private boolean movingRight = true; // Direction control
+    private int moveSpeed = 2; // Adjust movement speed
 
     public AlienFleet(List<Alien> aliens, int gameWidth, int playerY, BufferedImage alienImg) {
         this.aliens = aliens;
         this.gameWidth = gameWidth;
         this.playerY = playerY;
-        this.alienImg = alienImg;
         this.alienFactory = new AlienFactory(alienImg); // Initialize AlienFactory
     }
 
     public void moveAliens() {
         boolean collisionDetected = false;
 
-        // Move each alien and check for collisions
+        // Check if any alien is at the edge
         for (Alien alien : aliens) {
-            alien.move();
-            if (alien.isAtEdge(gameWidth)) {
+            if (movingRight && alien.x + alien.image.getWidth() / 10 >= gameWidth) {
+                collisionDetected = true;
+            } else if (!movingRight && alien.x <= 0) {
                 collisionDetected = true;
             }
         }
 
-        // If any alien hits the edge, reverse direction of all aliens and move them down
+        // Reverse direction and move down if a collision is detected
         if (collisionDetected) {
+            movingRight = !movingRight; // Reverse direction
             for (Alien alien : aliens) {
-                alien.reverseDirection();
                 alien.y += rowHeight; // Move down by one row
-                alien.move(); // Move aliens in the new direction immediately
             }
             addNewRow(); // Add a new row of aliens
+        } else {
+            // Move all aliens uniformly in the current direction
+            for (Alien alien : aliens) {
+                if (movingRight) {
+                    alien.x += moveSpeed; // Move right
+                } else {
+                    alien.x -= moveSpeed; // Move left
+                }
+            }
         }
     }
 
     private void addNewRow() {
-        List<Alien> newAliens = alienFactory.createAliens(1, 10, 100, 50 - rowHeight, 70, 50); // Create a new row of aliens
-        aliens.addAll(newAliens); // Add the new row to the fleet
+        int currentX = aliens.get(0).x; // Get the current x position of the first alien
+        List<Alien> newAliens = alienFactory.createAliens(1, 10, currentX, aliens.get(0).y - rowHeight, 70, 50); // Align new row with the current aliens
+        aliens.addAll(0, newAliens); // Add the new row to the top of the fleet
     }
 
     public boolean hasReachedBottom() {
