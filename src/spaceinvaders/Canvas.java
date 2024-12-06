@@ -29,19 +29,9 @@ public class Canvas extends JPanel {
     private void drawAliens(Graphics g) {
         int newWidth = gameManager.alienImg.getWidth() / 10;
         int newHeight = gameManager.alienImg.getHeight() / 10;
-        boolean edgeCollision = false;
-
         for (Alien alien : gameManager.aliens) {
-            if (alien.move(getWidth())) {
-                edgeCollision = true;
-            }
+            alien.move(getWidth());
             g.drawImage(alien.image, alien.x, alien.y, newWidth, newHeight, null);
-        }
-
-        if (edgeCollision) {
-            for (Alien alien : gameManager.aliens) {
-                alien.reverseDirection();
-            }
         }
     }
 

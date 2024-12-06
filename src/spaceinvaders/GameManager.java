@@ -13,10 +13,8 @@ public class GameManager {
     BufferedImage bulletImg = null;
     int playerX = 512 - 50; // Center player horizontally
     int playerY = 768 - 100; // Position player at the bottom
-
     List<Alien> aliens = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
-
     private final KeyEventHandler keyEventHandler;
     private final CollisionHandler collisionHandler;
 
@@ -24,24 +22,22 @@ public class GameManager {
         keyEventHandler = new KeyEventHandler(this);
         collisionHandler = new CollisionHandler(bullets, aliens);
         keyEventHandler.setNext(collisionHandler);
-
         loadImages();
         createAliens();
         startBulletTimer();
     }
 
-  private void loadImages() {
-    try {
-        alienImg = ImageIO.read(new File("../images/alien1.png"));
-        playerImg = ImageIO.read(new File("../images/player.png"));
-        bulletImg = ImageIO.read(new File("../images/bullet.png"));
-        Logger.log("Images loaded successfully.");
-    } catch (IOException e) {
-        e.printStackTrace();
-        Logger.log("Error loading images: " + e.getMessage());
+    private void loadImages() {
+        try {
+            alienImg = ImageIO.read(new File("../images/alien1.png"));
+            playerImg = ImageIO.read(new File("../images/player.png"));
+            bulletImg = ImageIO.read(new File("../images/bullet.png"));
+            Logger.log("Images loaded successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Logger.log("Error loading images: " + e.getMessage());
+        }
     }
-}
-
 
     private void createAliens() {
         int numRows = 3;
