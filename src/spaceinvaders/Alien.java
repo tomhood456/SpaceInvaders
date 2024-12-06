@@ -12,7 +12,7 @@ public class Alien {
         image = img;
         x = startX;
         y = startY;
-        direction = 10;
+        direction = 3;
     }
 
     public void move() {

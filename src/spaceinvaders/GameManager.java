@@ -18,15 +18,23 @@ public class GameManager {
     private AlienFleet alienFleet;
     private final KeyEventHandler keyEventHandler;
     private final CollisionHandler collisionHandler;
+    private final ScoreManager scoreManager;
+    private Canvas canvas; // Removed final keyword
+    private boolean gameOver = false;
 
-    public GameManager() {
+    public GameManager() { // Removed Canvas from constructor
         keyEventHandler = new KeyEventHandler(this);
-        collisionHandler = new CollisionHandler(bullets, aliens);
-        keyEventHandler.setNext(collisionHandler);
+        scoreManager = new ScoreManager();
         loadImages();
-        createAliens();
-        alienFleet = new AlienFleet(aliens, 1024); // Assuming gameWidth is 1024
+        AlienFactory alienFactory = new AlienFactory(alienImg);
+        aliens = alienFactory.createAliens(3, 10, 100, 50, 70, 50); // Create a fleet of aliens
+        alienFleet = new AlienFleet(aliens, 1024, playerY, alienImg); // Initialize AlienFleet with alienImg
+        collisionHandler = new CollisionHandler(bullets, aliens, scoreManager);
         startBulletTimer();
+    }
+
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
     }
 
     private void loadImages() {
@@ -38,18 +46,6 @@ public class GameManager {
         } catch (IOException e) {
             e.printStackTrace();
             Logger.log("Error loading images: " + e.getMessage());
-        }
-    }
-
-    private void createAliens() {
-        int numRows = 3;
-        int numCols = 10;
-        int alienSpacingX = 70;
-        int alienSpacingY = 50;
-        for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < numCols; col++) {
-                aliens.add(new Alien(alienImg, 100 + col * alienSpacingX, 50 + row * alienSpacingY));
-            }
         }
     }
 
@@ -73,11 +69,30 @@ public class GameManager {
         return keyEventHandler;
     }
 
+    public ScoreManager getScoreManager() {
+        return scoreManager;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
     public void updateGame() {
-        alienFleet.moveAliens();
-        for (Bullet bullet : bullets) {
-            bullet.move();
+        if (!gameOver) {
+            alienFleet.moveAliens();
+            for (Bullet bullet : bullets) {
+                bullet.move();
+            }
+            collisionHandler.handle(null); // Handle collisions
+            checkGameOver(); // Check if the game is over
         }
-        collisionHandler.handle(null); // Handle collisions (pass null as Graphics is not needed here)
+    }
+
+    private void checkGameOver() {
+        if (alienFleet.hasReachedBottom()) {
+            gameOver = true;
+            System.out.println("Game Over!");
+            canvas.setGameOver(true); // Notify Canvas directly
+        }
     }
 }

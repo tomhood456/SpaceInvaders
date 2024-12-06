@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Bullet {
     BufferedImage image;
     int x, y;
-    int speed = 10;  // Bullet speed
+    int speed = 3;  // Bullet speed
 
     public Bullet(BufferedImage img, int startX, int startY) {
         image = img;
