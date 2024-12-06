@@ -29,11 +29,12 @@ public class Canvas extends JPanel {
     private void drawAliens(Graphics g) {
         int newWidth = gameManager.alienImg.getWidth() / 10;
         int newHeight = gameManager.alienImg.getHeight() / 10;
+    
         for (Alien alien : gameManager.aliens) {
-            alien.move(getWidth());
             g.drawImage(alien.image, alien.x, alien.y, newWidth, newHeight, null);
         }
     }
+      
 
     private void drawPlayer(Graphics g) {
         g.drawImage(gameManager.playerImg, gameManager.playerX, gameManager.playerY, null);

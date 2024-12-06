@@ -15,28 +15,26 @@ public class Alien {
         direction = 10;
     }
 
-    public boolean move(int gameWidth) {
+    public void move() {
         moveCounter++;
         if (moveCounter % 2 == 0) { // Decrease this value to make movement more frequent
             x += direction;
-            // Check if the alien hits the left or right edge
-            if (x < 0 || x + image.getWidth() / 10 > gameWidth) {
-                reverseDirection();
-                return true; // Collision detected
-            }
         }
-        return false;
     }
 
-    private void reverseDirection() {
+    public void reverseDirection() {
         direction = -direction;
     }
 
-    public void setDirection(int direction) {
-        this.direction = direction;
+    public boolean isAtEdge(int gameWidth) {
+        return x < 0 || x + image.getWidth() / 10 > gameWidth;
     }
 
     public int getDirection() {
         return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 }

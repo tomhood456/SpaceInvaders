@@ -15,6 +15,7 @@ public class GameManager {
     int playerY = 768 - 100; // Position player at the bottom
     List<Alien> aliens = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
+    private AlienFleet alienFleet;
     private final KeyEventHandler keyEventHandler;
     private final CollisionHandler collisionHandler;
 
@@ -24,6 +25,7 @@ public class GameManager {
         keyEventHandler.setNext(collisionHandler);
         loadImages();
         createAliens();
+        alienFleet = new AlienFleet(aliens, 1024); // Assuming gameWidth is 1024
         startBulletTimer();
     }
 
@@ -71,8 +73,8 @@ public class GameManager {
         return keyEventHandler;
     }
 
-    // Method to update game state
     public void updateGame() {
+        alienFleet.moveAliens();
         for (Bullet bullet : bullets) {
             bullet.move();
         }
