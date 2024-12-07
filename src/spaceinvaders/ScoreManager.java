@@ -14,6 +14,10 @@ public class ScoreManager {
     public int getScore() {
         return score;
     }
+
+    public void addScore(int points) {
+        score += points;
+    }
 }
 
 

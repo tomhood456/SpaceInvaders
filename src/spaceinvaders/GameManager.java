@@ -8,9 +8,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class GameManager {
-    BufferedImage alienImg1 = null;
-    BufferedImage alienImg2 = null;
-    BufferedImage alienImg3 = null;
+    public BufferedImage alienImg1 = null;
+    public BufferedImage alienImg2 = null;
+    public BufferedImage alienImg3 = null;
     BufferedImage playerImg = null;
     BufferedImage bulletImg = null;
     int playerX = 512 - 50; // Center player horizontally
@@ -32,7 +32,7 @@ public class GameManager {
         AlienFactory alienFactory = new AlienFactory(alienImages);
         aliens = alienFactory.createAliens(3, 10, 100, 50, 70, 50); // Create a fleet of aliens
         alienFleet = new AlienFleet(aliens, 1024, playerY, alienImages); // Initialize AlienFleet with alien images
-        collisionHandler = new CollisionHandler(bullets, aliens, scoreManager);
+        collisionHandler = new CollisionHandler(bullets, aliens, scoreManager, alienImg1, alienImg2, alienImg3);
         startBulletTimer();
     }
 
@@ -101,3 +101,4 @@ public class GameManager {
         }
     }
 }
+
