@@ -12,6 +12,7 @@ public class AlienFleet {
     private AlienFactory alienFactory; // Add an instance of AlienFactory
     private boolean movingRight = true; // Direction control
     private int moveSpeed = 2; // Adjust movement speed
+    private boolean alternateAlien = true; // Toggle between alien1 and alien12
 
     public AlienFleet(List<Alien> aliens, int gameWidth, int playerY, BufferedImage[] alienImages) {
         this.aliens = aliens;
@@ -51,13 +52,37 @@ public class AlienFleet {
         }
     }
 
+    private int alienRowCounter = 0; // Counter to track rows in the cycle
+
     private void addNewRow() {
         int currentX = aliens.get(0).x; // Get the current x position of the first alien
         int newRowY = aliens.get(0).y - rowHeight; // New row y position
-        List<Alien> newAliens = alienFactory.createSingleRow(10, currentX, newRowY, 70); // Create a new single row of aliens
+    
+        // Determine the alien type based on the counter
+        int alienTypeIndex;
+        if (alienRowCounter < 2) {
+            alienTypeIndex = 0; // alien1
+        } else if (alienRowCounter < 3) {
+            alienTypeIndex = 2; // alien12
+        } else if (alienRowCounter < 5) {
+            alienTypeIndex = 0; // alien1
+        } else {
+            alienTypeIndex = 1; // alien10
+        }
+    
+        // Increment the counter, and reset it to 0 after every six rows
+        alienRowCounter = (alienRowCounter + 1) % 6;
+    
+        List<Alien> newAliens = alienFactory.createSingleRow(10, currentX, newRowY, 70);
+        BufferedImage[] alienImages = alienFactory.getAlienImages();
+        for (Alien alien : newAliens) {
+            alien.image = alienImages[alienTypeIndex];
+        }
+    
         aliens.addAll(0, newAliens); // Add the new row to the top of the fleet
     }
-
+    
+    
     public boolean hasReachedBottom() {
         for (Alien alien : aliens) {
             if (alien.y + alien.image.getHeight() / 10 >= playerY) {
@@ -71,4 +96,3 @@ public class AlienFleet {
         return aliens;
     }
 }
-
