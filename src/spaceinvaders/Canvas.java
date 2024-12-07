@@ -3,6 +3,7 @@ package spaceinvaders;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
@@ -10,6 +11,8 @@ public class Canvas extends JPanel {
     private final Renderer renderer;
     private final ScoreManager scoreManager;
     private boolean gameOver = false;
+    private static final int ALIEN_WIDTH = 30; // Desired alien width
+    private static final int ALIEN_HEIGHT = 20; // Desired alien height
 
     public Canvas(GameManager gameManager, ScoreManager scoreManager) {
         this.gameManager = gameManager;
@@ -35,10 +38,9 @@ public class Canvas extends JPanel {
     }
 
     private void drawAliens(Graphics g) {
-        int newWidth = gameManager.alienImg.getWidth() / 10;
-        int newHeight = gameManager.alienImg.getHeight() / 10;
         for (Alien alien : gameManager.aliens) {
-            g.drawImage(alien.image, alien.x, alien.y, newWidth, newHeight, null);
+            Image scaledImage = alien.image.getScaledInstance(ALIEN_WIDTH, ALIEN_HEIGHT, Image.SCALE_SMOOTH);
+            g.drawImage(scaledImage, alien.x, alien.y, ALIEN_WIDTH, ALIEN_HEIGHT, null);
         }
     }
 
@@ -62,3 +64,4 @@ public class Canvas extends JPanel {
         this.gameOver = gameOver;
     }
 }
+

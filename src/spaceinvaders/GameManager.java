@@ -8,7 +8,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 public class GameManager {
-    BufferedImage alienImg = null;
+    BufferedImage alienImg1 = null;
+    BufferedImage alienImg2 = null;
+    BufferedImage alienImg3 = null;
     BufferedImage playerImg = null;
     BufferedImage bulletImg = null;
     int playerX = 512 - 50; // Center player horizontally
@@ -22,13 +24,14 @@ public class GameManager {
     private Canvas canvas; // Removed final keyword
     private boolean gameOver = false;
 
-    public GameManager() { // Removed Canvas from constructor
+    public GameManager() {
         keyEventHandler = new KeyEventHandler(this);
         scoreManager = new ScoreManager();
         loadImages();
-        AlienFactory alienFactory = new AlienFactory(alienImg);
+        BufferedImage[] alienImages = {alienImg1, alienImg2, alienImg3};
+        AlienFactory alienFactory = new AlienFactory(alienImages);
         aliens = alienFactory.createAliens(3, 10, 100, 50, 70, 50); // Create a fleet of aliens
-        alienFleet = new AlienFleet(aliens, 1024, playerY, alienImg); // Initialize AlienFleet with alienImg
+        alienFleet = new AlienFleet(aliens, 1024, playerY, alienImages); // Initialize AlienFleet with alien images
         collisionHandler = new CollisionHandler(bullets, aliens, scoreManager);
         startBulletTimer();
     }
@@ -39,7 +42,9 @@ public class GameManager {
 
     private void loadImages() {
         try {
-            alienImg = ImageIO.read(new File("../images/alien1.png"));
+            alienImg1 = ImageIO.read(new File("../images/alien1.png"));
+            alienImg2 = ImageIO.read(new File("../images/alien10.png"));
+            alienImg3 = ImageIO.read(new File("../images/alien12.png"));
             playerImg = ImageIO.read(new File("../images/player.png"));
             bulletImg = ImageIO.read(new File("../images/bullet.png"));
             Logger.log("Images loaded successfully.");

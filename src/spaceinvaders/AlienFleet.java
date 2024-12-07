@@ -13,11 +13,11 @@ public class AlienFleet {
     private boolean movingRight = true; // Direction control
     private int moveSpeed = 2; // Adjust movement speed
 
-    public AlienFleet(List<Alien> aliens, int gameWidth, int playerY, BufferedImage alienImg) {
+    public AlienFleet(List<Alien> aliens, int gameWidth, int playerY, BufferedImage[] alienImages) {
         this.aliens = aliens;
         this.gameWidth = gameWidth;
         this.playerY = playerY;
-        this.alienFactory = new AlienFactory(alienImg); // Initialize AlienFactory
+        this.alienFactory = new AlienFactory(alienImages); // Initialize AlienFactory
     }
 
     public void moveAliens() {
@@ -53,7 +53,8 @@ public class AlienFleet {
 
     private void addNewRow() {
         int currentX = aliens.get(0).x; // Get the current x position of the first alien
-        List<Alien> newAliens = alienFactory.createAliens(1, 10, currentX, aliens.get(0).y - rowHeight, 70, 50); // Align new row with the current aliens
+        int newRowY = aliens.get(0).y - rowHeight; // New row y position
+        List<Alien> newAliens = alienFactory.createSingleRow(10, currentX, newRowY, 70); // Create a new single row of aliens
         aliens.addAll(0, newAliens); // Add the new row to the top of the fleet
     }
 
