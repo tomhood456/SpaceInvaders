@@ -11,12 +11,14 @@ public class GameManager {
     public BufferedImage alienImg1 = null;
     public BufferedImage alienImg2 = null;
     public BufferedImage alienImg3 = null;
+    public BufferedImage barrierImg = null; // Load the barrier image
     BufferedImage playerImg = null;
     BufferedImage bulletImg = null;
     int playerX = 512 - 50; // Center player horizontally
     int playerY = 768 - 100; // Position player at the bottom
     List<Alien> aliens = new ArrayList<>();
     List<Bullet> bullets = new ArrayList<>();
+    List<Barrier> barriers = new ArrayList<>(); // Add barriers to the game
     private AlienFleet alienFleet;
     private final KeyEventHandler keyEventHandler;
     private final CollisionHandler collisionHandler;
@@ -32,7 +34,8 @@ public class GameManager {
         AlienFactory alienFactory = new AlienFactory(alienImages);
         aliens = alienFactory.createAliens(3, 10, 100, 50, 70, 50); // Create a fleet of aliens
         alienFleet = new AlienFleet(aliens, 1024, playerY, alienImages); // Initialize AlienFleet with alien images
-        collisionHandler = new CollisionHandler(bullets, aliens, scoreManager, alienImg1, alienImg2, alienImg3);
+        createBarriers(); // Create barriers
+        collisionHandler = new CollisionHandler(bullets, aliens, barriers, scoreManager, alienImg1, alienImg2, alienImg3);
         startBulletTimer();
     }
 
@@ -47,6 +50,7 @@ public class GameManager {
             alienImg3 = ImageIO.read(new File("../images/alien12.png"));
             playerImg = ImageIO.read(new File("../images/player.png"));
             bulletImg = ImageIO.read(new File("../images/bullet.png"));
+            barrierImg = ImageIO.read(new File("../images/barrier.png"));
             Logger.log("Images loaded successfully.");
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,5 +104,14 @@ public class GameManager {
             canvas.setGameOver(true); // Notify Canvas directly
         }
     }
+
+    private void createBarriers() {
+        int barrierY = playerY - 80; // Position the barriers above the player
+        barriers.add(new Barrier(barrierImg, 300, barrierY));
+        barriers.add(new Barrier(barrierImg, 724, barrierY));
+    }
+    
 }
+
+
 

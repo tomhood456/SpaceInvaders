@@ -7,6 +7,7 @@ import java.util.List;
 public class CollisionHandler implements Handler {
     private final List<Bullet> bullets;
     private final List<Alien> aliens;
+    private final List<Barrier> barriers; // Add barriers to the handler
     private final ScoreManager scoreManager;
     private final BufferedImage alienImg1;
     private final BufferedImage alienImg2;
@@ -15,9 +16,10 @@ public class CollisionHandler implements Handler {
     private static final int ALIEN_WIDTH = 70; // Desired alien width
     private static final int ALIEN_HEIGHT = 50; // Desired alien height
 
-    public CollisionHandler(List<Bullet> bullets, List<Alien> aliens, ScoreManager scoreManager, BufferedImage alienImg1, BufferedImage alienImg2, BufferedImage alienImg3) {
+    public CollisionHandler(List<Bullet> bullets, List<Alien> aliens, List<Barrier> barriers, ScoreManager scoreManager, BufferedImage alienImg1, BufferedImage alienImg2, BufferedImage alienImg3) {
         this.bullets = bullets;
         this.aliens = aliens;
+        this.barriers = barriers;
         this.scoreManager = scoreManager;
         this.alienImg1 = alienImg1;
         this.alienImg2 = alienImg2;
@@ -37,6 +39,12 @@ public class CollisionHandler implements Handler {
             if (bullet.isOffScreen()) {
                 bulletIterator.remove();  // Remove bullet if it's off-screen
             } else {
+                for (Barrier barrier : barriers) {
+                    if (barrier.isHit(bullet)) {
+                        bulletIterator.remove(); // Remove bullet if it hits a barrier
+                        break;
+                    }
+                }
                 Iterator<Alien> alienIterator = aliens.iterator();
                 while (alienIterator.hasNext()) {
                     Alien alien = alienIterator.next();

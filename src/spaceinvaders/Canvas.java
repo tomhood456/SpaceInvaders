@@ -13,6 +13,8 @@ public class Canvas extends JPanel {
     private boolean gameOver = false;
     private static final int ALIEN_WIDTH = 30; // Desired alien width
     private static final int ALIEN_HEIGHT = 20; // Desired alien height
+    private static final int BARRIER_WIDTH = 100; // New barrier width
+    private static final int BARRIER_HEIGHT = 10; // New barrier height
 
     public Canvas(GameManager gameManager, ScoreManager scoreManager) {
         this.gameManager = gameManager;
@@ -27,6 +29,7 @@ public class Canvas extends JPanel {
         renderer.render(g); // Render bullets
         drawPlayer(g);
         drawScore(g); // Draw the score
+        drawBarriers(g); // Draw barriers
         if (gameOver) {
             drawGameOver(g); // Draw "Game Over" text
         }
@@ -54,6 +57,13 @@ public class Canvas extends JPanel {
         g.drawString("Score: " + scoreManager.getScore(), 10, 20);
     }
 
+    private void drawBarriers(Graphics g) {
+        for (Barrier barrier : gameManager.barriers) {
+            Image scaledImage = barrier.image.getScaledInstance(BARRIER_WIDTH, BARRIER_HEIGHT, Image.SCALE_SMOOTH);
+            g.drawImage(scaledImage, barrier.x, barrier.y, BARRIER_WIDTH, BARRIER_HEIGHT, null);
+        }
+    }
+
     private void drawGameOver(Graphics g) {
         g.setColor(Color.RED);
         g.setFont(new Font("Arial", Font.BOLD, 50));
@@ -64,4 +74,3 @@ public class Canvas extends JPanel {
         this.gameOver = gameOver;
     }
 }
-
