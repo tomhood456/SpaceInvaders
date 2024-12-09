@@ -11,5 +11,8 @@ public class GameConfig {
     public static final int BULLET_SPEED = 3;
     public static final int ALIEN_DIRECTION = 3;
     public static final int BULLET_Y_THRESHOLD = 10;
+    public static final int PLAYER_X = 462; // Center player horizontally (1024/2 - 50)
+    public static final int PLAYER_Y = 668; // Position player at the bottom (768 - 100)
 }
+
 

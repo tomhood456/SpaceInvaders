@@ -3,7 +3,12 @@ package spaceinvaders;
 import java.awt.event.KeyEvent;
 
 public class KeyEventProcessor implements Handler {
+    private final GameManager gameManager;
     private Handler next;
+
+    public KeyEventProcessor(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
     public void setNext(Handler next) {
         this.next = next;
@@ -14,8 +19,7 @@ public class KeyEventProcessor implements Handler {
         if (request instanceof KeyEvent) {
             KeyEvent ke = (KeyEvent) request;
             if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
-                // Handle space key press, e.g., shooting a bullet
-                System.out.println("Space key pressed!");
+                gameManager.addBullet(); // Add bullet when space bar is pressed
             }
         }
 
@@ -24,4 +28,3 @@ public class KeyEventProcessor implements Handler {
         }
     }
 }
-

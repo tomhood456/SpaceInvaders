@@ -11,8 +11,8 @@ public class GameManager {
     public BufferedImage barrierImg;
     public BufferedImage playerImg;
     public BufferedImage bulletImg;
-    int playerX = 462; // Center player horizontally (1024/2 - 50)
-    int playerY = 668; // Position player at the bottom (768 - 100)
+    int playerX = GameConfig.PLAYER_X; 
+    int playerY = GameConfig.PLAYER_Y;
     List<Alien> aliens;
     List<Bullet> bullets = new ArrayList<>();
     List<Barrier> barriers;
@@ -27,7 +27,7 @@ public class GameManager {
 
     public GameManager() {
         keyEventHandler = new KeyEventHandler(this);
-        keyEventProcessor = new KeyEventProcessor();
+        keyEventProcessor = new KeyEventProcessor(this);
         scoreManager = new ScoreManager();
         ImageLoader imageLoader = new ImageLoader();
         loadImages(imageLoader);
@@ -44,7 +44,7 @@ public class GameManager {
         // Set up key event chain
         keyEventHandler.setNext(keyEventProcessor);
 
-        startBulletTimer();
+        // Removed the constant bullet timer
     }
 
     public void setCanvas(Canvas canvas) {
@@ -61,10 +61,6 @@ public class GameManager {
         barrierImg = loader.loadImage("../images/barrier.png");
     }
 
-    private void startBulletTimer() {
-        new javax.swing.Timer(500, e -> addBullet()).start();
-    }
-
     public void movePlayerLeft() {
         playerX -= 10;
     }
@@ -73,7 +69,7 @@ public class GameManager {
         playerX += 10;
     }
 
-    private void addBullet() {
+    public void addBullet() {
         bullets.add(new Bullet(bulletImg, playerX + playerImg.getWidth() / 2 - bulletImg.getWidth() / 2, playerY));
     }
 
