@@ -20,13 +20,13 @@ public class AlienFactory {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 BufferedImage img;
-                if (row == 1) {
+                if (row == 0) {
+                    img = alienImages[1]; 
+                } else if (row == 1) {
                     img = alienImages[0]; 
                 } else if (row == 2) { 
                     img = alienImages[0];
-                } else if (row == 0) {
-                    img = alienImages[1]; }
-                else {
+                } else {
                     img = alienImages[2]; }
                 aliens.add(new Alien(img, startX + col * spacingX, startY + row * spacingY));
             }
