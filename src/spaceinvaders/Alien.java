@@ -5,21 +5,16 @@ import java.awt.image.BufferedImage;
 public class Alien {
     BufferedImage image;
     int x, y;
-    private int direction;
-    private int moveCounter = 0;
+    private int direction = GameConfig.ALIEN_DIRECTION;
 
     public Alien(BufferedImage img, int startX, int startY) {
         image = img;
         x = startX;
         y = startY;
-        direction = 3;
     }
 
     public void move() {
-        moveCounter++;
-        if (moveCounter % 2 == 0) {
-            x += direction;
-        }
+        x += direction;
     }
 
     public void reverseDirection() {
@@ -28,13 +23,5 @@ public class Alien {
 
     public boolean isAtEdge(int gameWidth) {
         return x < 0 || x + image.getWidth() / 10 > gameWidth;
-    }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
     }
 }

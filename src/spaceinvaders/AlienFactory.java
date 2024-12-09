@@ -20,15 +20,14 @@ public class AlienFactory {
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 BufferedImage img;
-                if (row == 1) { // Bottom two rows are alien1
+                if (row == 1) {
+                    img = alienImages[0]; 
+                } else if (row == 2) { 
                     img = alienImages[0];
-                } else if (row == 2) { // Third row from the bottom is alien10
-                    img = alienImages[0];
-                } else if (row == 0) { // Fourth and fifth row from the bottom are alien1 again
-                    img = alienImages[1];
-                } else { // Sixth row from the bottom is alien12
-                    img = alienImages[2];
-                }
+                } else if (row == 0) {
+                    img = alienImages[1]; }
+                else {
+                    img = alienImages[2]; }
                 aliens.add(new Alien(img, startX + col * spacingX, startY + row * spacingY));
             }
         }
@@ -36,11 +35,6 @@ public class AlienFactory {
     }
 
     public List<Alien> createSingleRow(int numCols, int startX, int startY, int spacingX) {
-        List<Alien> aliens = new ArrayList<>();
-        BufferedImage img = alienImages[0]; // Default to alien1 for simplicity
-        for (int col = 0; col < numCols; col++) {
-            aliens.add(new Alien(img, startX + col * spacingX, startY));
-        }
-        return aliens;
+        return createAliens(1, numCols, startX, startY, spacingX, 0);
     }
 }

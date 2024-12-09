@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class Bullet {
     BufferedImage image;
     int x, y;
-    int speed = 3;  // Bullet speed
+    int speed = GameConfig.BULLET_SPEED;
 
     public Bullet(BufferedImage img, int startX, int startY) {
         image = img;
@@ -13,12 +13,10 @@ public class Bullet {
         y = startY;
     }
 
-    // Move the bullet upwards
     public void move() {
         y -= speed;
     }
 
-    // Check if the bullet is off the screen
     public boolean isOffScreen() {
         return y < 0;
     }

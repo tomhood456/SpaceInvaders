@@ -18,14 +18,16 @@ public class GameManager {
     List<Barrier> barriers;
     private AlienFleet alienFleet;
     private final KeyEventHandler keyEventHandler;
+    private final KeyEventProcessor keyEventProcessor;
     private final CollisionHandler collisionHandler;
     private final ScoreManager scoreManager;
     private GameObjectInitializer objectInitializer;
     private GameStateManager stateManager;
     private Canvas canvas;
-    
+
     public GameManager() {
         keyEventHandler = new KeyEventHandler(this);
+        keyEventProcessor = new KeyEventProcessor();
         scoreManager = new ScoreManager();
         ImageLoader imageLoader = new ImageLoader();
         loadImages(imageLoader);
@@ -35,6 +37,13 @@ public class GameManager {
         alienFleet = new AlienFleet(aliens, 1024, playerY, new BufferedImage[] {alienImg1, alienImg2, alienImg3});
         collisionHandler = new CollisionHandler(bullets, aliens, barriers, scoreManager, alienImg1, alienImg2, alienImg3, playerY);
         stateManager = new GameStateManager(alienFleet, bullets, collisionHandler, canvas);
+
+        // Set up collision chain
+        collisionHandler.setNext(null);
+
+        // Set up key event chain
+        keyEventHandler.setNext(keyEventProcessor);
+
         startBulletTimer();
     }
 

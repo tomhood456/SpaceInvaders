@@ -17,7 +17,6 @@ final class KeyEventHandler extends KeyAdapter implements Handler {
 
     @Override
     public void handle(Object request) {
-        // This method is not used for key events
         if (next != null) {
             next.handle(request);
         }
@@ -30,5 +29,7 @@ final class KeyEventHandler extends KeyAdapter implements Handler {
         } else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
             gameManager.movePlayerRight();
         }
+
+        handle(ke); // Pass the event down the chain
     }
 }

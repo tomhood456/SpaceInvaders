@@ -51,7 +51,15 @@ public class AlienFleet {
     private void addNewRow() {
         int currentX = aliens.get(0).x;
         int newRowY = aliens.get(0).y - GameConfig.ROW_HEIGHT;
+        int alienTypeIndex = getAlienTypeIndex();
+        List<Alien> newAliens = alienFactory.createSingleRow(10, currentX, newRowY, GameConfig.SPACING_X);
+        for (Alien alien : newAliens) {
+            alien.image = alienFactory.getAlienImages()[alienTypeIndex];
+        }
+        aliens.addAll(0, newAliens);
+    }
 
+    private int getAlienTypeIndex() {
         int alienTypeIndex;
         if (alienRowCounter < 2) {
             alienTypeIndex = 0;
@@ -62,17 +70,8 @@ public class AlienFleet {
         } else {
             alienTypeIndex = 1;
         }
-
         alienRowCounter = (alienRowCounter + 1) % 6;
-
-        // Include the missing `GameConfig.SPACING_X` parameter
-        List<Alien> newAliens = alienFactory.createSingleRow(10, currentX, newRowY, GameConfig.SPACING_X);
-        BufferedImage[] alienImages = alienFactory.getAlienImages();
-        for (Alien alien : newAliens) {
-            alien.image = alienImages[alienTypeIndex];
-        }
-
-        aliens.addAll(0, newAliens);
+        return alienTypeIndex;
     }
 
     public boolean hasReachedBottom() {

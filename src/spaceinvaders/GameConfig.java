@@ -8,4 +8,8 @@ public class GameConfig {
     public static final int ROW_HEIGHT = 50;
     public static final int MOVE_SPEED = 2;
     public static final int SPACING_X = 70;
+    public static final int BULLET_SPEED = 3;
+    public static final int ALIEN_DIRECTION = 3;
+    public static final int BULLET_Y_THRESHOLD = 10;
 }
+
