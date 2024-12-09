@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameManager {
+public final class GameManager {
     private final BufferedImage alienImg1;
     private final BufferedImage alienImg2;
     private final BufferedImage alienImg3;
@@ -51,42 +51,43 @@ public class GameManager {
         keyEventHandler.setNext(keyEventProcessor);
     }
 
-    public BufferedImage getPlayerImg() {
+    public final BufferedImage getPlayerImg() {
         return playerImg;
     }
 
-    public void setCanvas(Canvas canvas) {
+    public final void setCanvas(Canvas canvas) {
         this.canvas = canvas;
         stateManager = new GameStateManager(alienFleet, bullets, collisionHandler, canvas);
     }
 
-    public void movePlayerLeft() {
+    public final void movePlayerLeft() {
         playerX -= 10;
     }
 
-    public void movePlayerRight() {
+    public final void movePlayerRight() {
         playerX += 10;
     }
 
-    public void addBullet() {
+    public final void addBullet() {
         bullets.add(new Bullet(bulletImg, playerX + playerImg.getWidth() / 2 - bulletImg.getWidth() / 2, playerY));
     }
 
-    public KeyEventHandler getKeyEventHandler() {
+    public final KeyEventHandler getKeyEventHandler() {
         return keyEventHandler;
     }
 
-    public ScoreManager getScoreManager() {
+    public final ScoreManager getScoreManager() {
         return scoreManager;
     }
 
-    public void updateGame() {
+    public final void updateGame() {
         stateManager.updateGame();
     }
 
-    public boolean isGameOver() {
+    public final boolean isGameOver() {
         return stateManager.isGameOver();
     }
 }
+
 
 

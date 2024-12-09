@@ -1,6 +1,6 @@
 package spaceinvaders;
 
-public class Main extends Thread {
+public final class Main extends Thread {
     private Screen screen;
     private GameManager gameManager;
 
@@ -10,7 +10,7 @@ public class Main extends Thread {
         screen.setVisible(true);
     }
 
-    public void run() {
+    public final void run() {
         while (true) {
             try {
                 if (!gameManager.isGameOver()) {

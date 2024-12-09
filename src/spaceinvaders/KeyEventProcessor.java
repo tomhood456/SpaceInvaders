@@ -2,7 +2,7 @@ package spaceinvaders;
 
 import java.awt.event.KeyEvent;
 
-public class KeyEventProcessor implements Handler {
+public final class KeyEventProcessor implements Handler {
     private final GameManager gameManager;
     private Handler next;
 
@@ -15,7 +15,7 @@ public class KeyEventProcessor implements Handler {
     }
 
     @Override
-    public void handle(Object request) {
+    public final void handle(Object request) {
         if (request instanceof KeyEvent) {
             KeyEvent ke = (KeyEvent) request;
             if (ke.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -28,3 +28,4 @@ public class KeyEventProcessor implements Handler {
         }
     }
 }
+

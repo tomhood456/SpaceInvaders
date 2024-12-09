@@ -2,7 +2,7 @@ package spaceinvaders;
 
 import javax.swing.JFrame;
 
-public class Screen extends JFrame {
+public final class Screen extends JFrame {
     private static Screen instance;
     private final Canvas canvas;
 
@@ -29,12 +29,12 @@ public class Screen extends JFrame {
         addKeyListener(gameManager.getKeyEventHandler());
     }
 
-    public Canvas getCanvas() {
+    public final Canvas getCanvas() {
         return canvas;
     }
 
     @Override
-    public void setVisible(boolean visible) {
+    public final void setVisible(boolean visible) {
         super.setVisible(visible);
         if (visible) {
             requestFocusInWindow();

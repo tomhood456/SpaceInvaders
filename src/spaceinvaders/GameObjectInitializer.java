@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameObjectInitializer {
+public final class GameObjectInitializer {
     private final GameObjectFactory factory;
     private final BufferedImage[] alienImages;
 
@@ -13,7 +13,7 @@ public class GameObjectInitializer {
         this.alienImages = alienImages;
     }
 
-    public List<Alien> initializeAliens() {
+    public final List<Alien> initializeAliens() {
         List<Alien> aliens = new ArrayList<>();
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 10; col++) {
@@ -32,7 +32,7 @@ public class GameObjectInitializer {
         return aliens;
     }
 
-    public List<Barrier> initializeBarriers(BufferedImage barrierImage, int playerY) {
+    public final List<Barrier> initializeBarriers(BufferedImage barrierImage, int playerY) {
         int barrierY = playerY - 80; // Position the barriers above the player
         List<Barrier> barriers = new ArrayList<>();
         barriers.add(factory.createBarrier(barrierImage, 300, barrierY));

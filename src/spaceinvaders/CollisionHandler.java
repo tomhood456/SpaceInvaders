@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
-public class CollisionHandler implements Handler {
+public final class CollisionHandler implements Handler {
     private final List<Bullet> bullets;
     private final List<Alien> aliens;
     private final List<Barrier> barriers;
@@ -31,7 +31,7 @@ public class CollisionHandler implements Handler {
     }
 
     @Override
-    public void handle(Object request) {
+    public final void handle(Object request) {
         Iterator<Bullet> bulletIterator = bullets.iterator();
         while (bulletIterator.hasNext()) {
             Bullet bullet = bulletIterator.next();
@@ -61,6 +61,7 @@ public class CollisionHandler implements Handler {
         }
     }
 }
+
 
 
 

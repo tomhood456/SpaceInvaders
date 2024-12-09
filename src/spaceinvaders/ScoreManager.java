@@ -1,23 +1,24 @@
 package spaceinvaders;
 
-public class ScoreManager {
+public final class ScoreManager {
     private int score;
 
     public ScoreManager() {
         this.score = 0;
     }
 
-    public void increaseScore(int amount) {
+    public final void increaseScore(int amount) {
         score += amount;
     }
 
-    public int getScore() {
+    public final int getScore() {
         return score;
     }
 
-    public void addScore(int points) {
+    public final void addScore(int points) {
         score += points;
     }
 }
+
 
 

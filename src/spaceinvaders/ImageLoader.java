@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class ImageLoader {
+public final class ImageLoader {
     private BufferedImage alienImg1;
     private BufferedImage alienImg2;
     private BufferedImage alienImg3;
@@ -35,10 +35,11 @@ public class ImageLoader {
         }
     }
 
-    public BufferedImage getAlienImg1() { return alienImg1; }
-    public BufferedImage getAlienImg2() { return alienImg2; }
-    public BufferedImage getAlienImg3() { return alienImg3; }
-    public BufferedImage getBarrierImg() { return barrierImg; }
-    public BufferedImage getPlayerImg() { return playerImg; }
-    public BufferedImage getBulletImg() { return bulletImg; }
+    public final BufferedImage getAlienImg1() { return alienImg1; }
+    public final BufferedImage getAlienImg2() { return alienImg2; }
+    public final BufferedImage getAlienImg3() { return alienImg3; }
+    public final BufferedImage getBarrierImg() { return barrierImg; }
+    public final BufferedImage getPlayerImg() { return playerImg; }
+    public final BufferedImage getBulletImg() { return bulletImg; }
 }
+

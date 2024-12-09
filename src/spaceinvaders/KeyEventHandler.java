@@ -3,7 +3,7 @@ package spaceinvaders;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-final class KeyEventHandler extends KeyAdapter implements Handler {
+public final class KeyEventHandler extends KeyAdapter implements Handler {
     private final GameManager gameManager;
     private Handler next;
 
@@ -16,14 +16,14 @@ final class KeyEventHandler extends KeyAdapter implements Handler {
     }
 
     @Override
-    public void handle(Object request) {
+    public final void handle(Object request) {
         if (next != null) {
             next.handle(request);
         }
     }
 
     @Override
-    public void keyPressed(KeyEvent ke) {
+    public final void keyPressed(KeyEvent ke) {
         if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
             gameManager.movePlayerLeft();
         } else if (ke.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -33,3 +33,4 @@ final class KeyEventHandler extends KeyAdapter implements Handler {
         handle(ke); // Pass the event down the chain
     }
 }
+
