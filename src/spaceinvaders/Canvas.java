@@ -46,7 +46,7 @@ public class Canvas extends JPanel {
     }
 
     private void drawPlayer(Graphics g) {
-        g.drawImage(gameManager.playerImg, gameManager.playerX, gameManager.playerY, null);
+        g.drawImage(gameManager.getPlayerImg(), gameManager.playerX, gameManager.playerY, null);
     }
 
     private void drawScore(Graphics g) {

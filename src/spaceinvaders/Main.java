@@ -28,9 +28,9 @@ public class Main extends Thread {
     }
 
     public static void main(String[] args) {
-        GameManager gameManager = new GameManager(); // Initialize GameManager first
+        ImageLoader imageLoader = new ImageLoader(); // Create ImageLoader instance
+        GameManager gameManager = new GameManager(imageLoader); // Pass ImageLoader to GameManager
         Main main = new Main(gameManager);
         main.start();
     }
 }
-
