@@ -35,7 +35,6 @@ public class GameStateManager {
     private void checkGameOver() {
         if (alienFleet.hasReachedBottom()) {
             gameOver = true;
-            System.out.println("Game Over!");
             canvas.setGameOver(true); // Notify Canvas directly
         }
     }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 public class Canvas extends JPanel {
@@ -11,8 +13,6 @@ public class Canvas extends JPanel {
     private final Renderer renderer;
     private final ScoreManager scoreManager;
     private boolean gameOver = false;
-    private static final int ALIEN_WIDTH = 30; 
-    private static final int ALIEN_HEIGHT = 20; 
 
     public Canvas(GameManager gameManager, ScoreManager scoreManager) {
         this.gameManager = gameManager;
@@ -24,12 +24,12 @@ public class Canvas extends JPanel {
     public final void paint(Graphics g) {
         clearScreen(g);
         drawAliens(g);
-        renderer.render(g); 
+        renderer.render(g);
         drawPlayer(g);
-        drawScore(g); 
-        drawBarriers(g); 
+        drawScore(g);
+        drawBarriers(g);
         if (gameOver) {
-            drawGameOver(g); 
+            drawGameOver(g);
         }
     }
 
@@ -39,9 +39,10 @@ public class Canvas extends JPanel {
     }
 
     private void drawAliens(Graphics g) {
-        for (Alien alien : gameManager.aliens) {
-            Image scaledImage = alien.image.getScaledInstance(ALIEN_WIDTH, ALIEN_HEIGHT, Image.SCALE_SMOOTH);
-            g.drawImage(scaledImage, alien.x, alien.y, ALIEN_WIDTH, ALIEN_HEIGHT, null);
+        List<Alien> aliensCopy = new ArrayList<>(gameManager.aliens); // Create a copy of the aliens list
+        for (Alien alien : aliensCopy) {
+            Image scaledImage = alien.image.getScaledInstance(GameConfig.ALIEN_WIDTH, GameConfig.ALIEN_HEIGHT, Image.SCALE_SMOOTH);
+            g.drawImage(scaledImage, alien.x, alien.y, GameConfig.ALIEN_WIDTH, GameConfig.ALIEN_HEIGHT, null);
         }
     }
 
