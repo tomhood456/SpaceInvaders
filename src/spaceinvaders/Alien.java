@@ -6,7 +6,7 @@ public class Alien {
     BufferedImage image;
     int x, y;
     private int direction;
-    private int moveCounter = 0; // Counter to control move frequency
+    private int moveCounter = 0;
 
     public Alien(BufferedImage img, int startX, int startY) {
         image = img;
@@ -17,7 +17,7 @@ public class Alien {
 
     public void move() {
         moveCounter++;
-        if (moveCounter % 2 == 0) { // Decrease this value to make movement more frequent
+        if (moveCounter % 2 == 0) {
             x += direction;
         }
     }

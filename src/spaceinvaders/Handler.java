@@ -1,5 +1,5 @@
-package spaceinvaders; 
+package spaceinvaders;
 
-public interface Handler { 
-    void handle(Object request); 
+public interface Handler {
+    void handle(Object request);
 }

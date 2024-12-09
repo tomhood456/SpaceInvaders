@@ -12,11 +12,13 @@ public class CollisionHandler implements Handler {
     private final BufferedImage alienImg1;
     private final BufferedImage alienImg2;
     private final BufferedImage alienImg3;
+    private final int playerY; // Store player Y position
     private Handler next;
     private static final int ALIEN_WIDTH = 70; // Desired alien width
     private static final int ALIEN_HEIGHT = 50; // Desired alien height
+    private static final int BULLET_Y_THRESHOLD = 10; // Adjust threshold to ensure bullets move away from player
 
-    public CollisionHandler(List<Bullet> bullets, List<Alien> aliens, List<Barrier> barriers, ScoreManager scoreManager, BufferedImage alienImg1, BufferedImage alienImg2, BufferedImage alienImg3) {
+    public CollisionHandler(List<Bullet> bullets, List<Alien> aliens, List<Barrier> barriers, ScoreManager scoreManager, BufferedImage alienImg1, BufferedImage alienImg2, BufferedImage alienImg3, int playerY) {
         this.bullets = bullets;
         this.aliens = aliens;
         this.barriers = barriers;
@@ -24,6 +26,7 @@ public class CollisionHandler implements Handler {
         this.alienImg1 = alienImg1;
         this.alienImg2 = alienImg2;
         this.alienImg3 = alienImg3;
+        this.playerY = playerY;
     }
 
     public void setNext(Handler next) {
@@ -40,9 +43,11 @@ public class CollisionHandler implements Handler {
                 bulletIterator.remove();  // Remove bullet if it's off-screen
             } else {
                 for (Barrier barrier : barriers) {
-                    if (barrier.isHit(bullet)) {
-                        bulletIterator.remove(); // Remove bullet if it hits a barrier
-                        break;
+                    if (bullet.y < playerY - BULLET_Y_THRESHOLD) { // Ensure bullet is above the player before checking barrier collision
+                        if (barrier.isHit(bullet)) {
+                            bulletIterator.remove(); // Remove bullet if it hits a barrier
+                            break;
+                        }
                     }
                 }
                 Iterator<Alien> alienIterator = aliens.iterator();

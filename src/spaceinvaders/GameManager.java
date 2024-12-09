@@ -1,61 +1,55 @@
 package spaceinvaders;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 public class GameManager {
-    public BufferedImage alienImg1 = null;
-    public BufferedImage alienImg2 = null;
-    public BufferedImage alienImg3 = null;
-    public BufferedImage barrierImg = null; // Load the barrier image
-    BufferedImage playerImg = null;
-    BufferedImage bulletImg = null;
-    int playerX = 512 - 50; // Center player horizontally
-    int playerY = 768 - 100; // Position player at the bottom
-    List<Alien> aliens = new ArrayList<>();
+    public BufferedImage alienImg1;
+    public BufferedImage alienImg2;
+    public BufferedImage alienImg3;
+    public BufferedImage barrierImg;
+    public BufferedImage playerImg;
+    public BufferedImage bulletImg;
+    int playerX = 462; // Center player horizontally (1024/2 - 50)
+    int playerY = 668; // Position player at the bottom (768 - 100)
+    List<Alien> aliens;
     List<Bullet> bullets = new ArrayList<>();
-    List<Barrier> barriers = new ArrayList<>(); // Add barriers to the game
+    List<Barrier> barriers;
     private AlienFleet alienFleet;
     private final KeyEventHandler keyEventHandler;
     private final CollisionHandler collisionHandler;
     private final ScoreManager scoreManager;
-    private Canvas canvas; // Removed final keyword
-    private boolean gameOver = false;
-
+    private GameObjectInitializer objectInitializer;
+    private GameStateManager stateManager;
+    private Canvas canvas;
+    
     public GameManager() {
         keyEventHandler = new KeyEventHandler(this);
         scoreManager = new ScoreManager();
-        loadImages();
-        BufferedImage[] alienImages = {alienImg1, alienImg2, alienImg3};
-        AlienFactory alienFactory = new AlienFactory(alienImages);
-        aliens = alienFactory.createAliens(3, 10, 100, 50, 70, 50); // Create a fleet of aliens
-        alienFleet = new AlienFleet(aliens, 1024, playerY, alienImages); // Initialize AlienFleet with alien images
-        createBarriers(); // Create barriers
-        collisionHandler = new CollisionHandler(bullets, aliens, barriers, scoreManager, alienImg1, alienImg2, alienImg3);
+        ImageLoader imageLoader = new ImageLoader();
+        loadImages(imageLoader);
+        objectInitializer = new GameObjectInitializer(new BufferedImage[] {alienImg1, alienImg2, alienImg3});
+        aliens = objectInitializer.initializeAliens();
+        barriers = objectInitializer.initializeBarriers(barrierImg, playerY);
+        alienFleet = new AlienFleet(aliens, 1024, playerY, new BufferedImage[] {alienImg1, alienImg2, alienImg3});
+        collisionHandler = new CollisionHandler(bullets, aliens, barriers, scoreManager, alienImg1, alienImg2, alienImg3, playerY);
+        stateManager = new GameStateManager(alienFleet, bullets, collisionHandler, canvas);
         startBulletTimer();
     }
 
     public void setCanvas(Canvas canvas) {
         this.canvas = canvas;
+        stateManager = new GameStateManager(alienFleet, bullets, collisionHandler, canvas);
     }
 
-    private void loadImages() {
-        try {
-            alienImg1 = ImageIO.read(new File("../images/alien1.png"));
-            alienImg2 = ImageIO.read(new File("../images/alien10.png"));
-            alienImg3 = ImageIO.read(new File("../images/alien12.png"));
-            playerImg = ImageIO.read(new File("../images/player.png"));
-            bulletImg = ImageIO.read(new File("../images/bullet.png"));
-            barrierImg = ImageIO.read(new File("../images/barrier.png"));
-            Logger.log("Images loaded successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Logger.log("Error loading images: " + e.getMessage());
-        }
+    private void loadImages(ImageLoader loader) {
+        alienImg1 = loader.loadImage("../images/alien1.png");
+        alienImg2 = loader.loadImage("../images/alien10.png");
+        alienImg3 = loader.loadImage("../images/alien12.png");
+        playerImg = loader.loadImage("../images/player.png");
+        bulletImg = loader.loadImage("../images/bullet.png");
+        barrierImg = loader.loadImage("../images/barrier.png");
     }
 
     private void startBulletTimer() {
@@ -82,36 +76,11 @@ public class GameManager {
         return scoreManager;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
     public void updateGame() {
-        if (!gameOver) {
-            alienFleet.moveAliens();
-            for (Bullet bullet : bullets) {
-                bullet.move();
-            }
-            collisionHandler.handle(null); // Handle collisions
-            checkGameOver(); // Check if the game is over
-        }
+        stateManager.updateGame();
     }
 
-    private void checkGameOver() {
-        if (alienFleet.hasReachedBottom()) {
-            gameOver = true;
-            System.out.println("Game Over!");
-            canvas.setGameOver(true); // Notify Canvas directly
-        }
+    public boolean isGameOver() {
+        return stateManager.isGameOver();
     }
-
-    private void createBarriers() {
-        int barrierY = playerY - 80; // Position the barriers above the player
-        barriers.add(new Barrier(barrierImg, 300, barrierY));
-        barriers.add(new Barrier(barrierImg, 724, barrierY));
-    }
-    
 }
-
-
-

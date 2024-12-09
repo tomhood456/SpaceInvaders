@@ -11,10 +11,8 @@ public class Canvas extends JPanel {
     private final Renderer renderer;
     private final ScoreManager scoreManager;
     private boolean gameOver = false;
-    private static final int ALIEN_WIDTH = 30; // Desired alien width
-    private static final int ALIEN_HEIGHT = 20; // Desired alien height
-    private static final int BARRIER_WIDTH = 100; // New barrier width
-    private static final int BARRIER_HEIGHT = 10; // New barrier height
+    private static final int ALIEN_WIDTH = 30; 
+    private static final int ALIEN_HEIGHT = 20; 
 
     public Canvas(GameManager gameManager, ScoreManager scoreManager) {
         this.gameManager = gameManager;
@@ -26,12 +24,12 @@ public class Canvas extends JPanel {
     public final void paint(Graphics g) {
         clearScreen(g);
         drawAliens(g);
-        renderer.render(g); // Render bullets
+        renderer.render(g); 
         drawPlayer(g);
-        drawScore(g); // Draw the score
-        drawBarriers(g); // Draw barriers
+        drawScore(g); 
+        drawBarriers(g); 
         if (gameOver) {
-            drawGameOver(g); // Draw "Game Over" text
+            drawGameOver(g); 
         }
     }
 
@@ -59,8 +57,8 @@ public class Canvas extends JPanel {
 
     private void drawBarriers(Graphics g) {
         for (Barrier barrier : gameManager.barriers) {
-            Image scaledImage = barrier.image.getScaledInstance(BARRIER_WIDTH, BARRIER_HEIGHT, Image.SCALE_SMOOTH);
-            g.drawImage(scaledImage, barrier.x, barrier.y, BARRIER_WIDTH, BARRIER_HEIGHT, null);
+            Image scaledImage = barrier.image.getScaledInstance(GameConfig.BARRIER_WIDTH, GameConfig.BARRIER_HEIGHT, Image.SCALE_SMOOTH);
+            g.drawImage(scaledImage, barrier.x, barrier.y, GameConfig.BARRIER_WIDTH, GameConfig.BARRIER_HEIGHT, null);
         }
     }
 
@@ -72,5 +70,9 @@ public class Canvas extends JPanel {
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public void render() {
+        repaint();
     }
 }

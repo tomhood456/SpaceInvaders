@@ -3,12 +3,10 @@ package spaceinvaders;
 public class Main extends Thread {
     private Screen screen;
     private GameManager gameManager;
-    private ScoreManager scoreManager;
 
-    public Main(GameManager gameManager, ScoreManager scoreManager) {
+    public Main(GameManager gameManager) {
         this.gameManager = gameManager;
-        this.scoreManager = scoreManager;
-        screen = Screen.getInstance(gameManager, scoreManager);
+        screen = Screen.getInstance(gameManager, gameManager.getScoreManager());
         screen.setVisible(true);
     }
 
@@ -31,8 +29,7 @@ public class Main extends Thread {
 
     public static void main(String[] args) {
         GameManager gameManager = new GameManager(); // Initialize GameManager first
-        ScoreManager scoreManager = gameManager.getScoreManager();
-        Main main = new Main(gameManager, scoreManager);
+        Main main = new Main(gameManager);
         main.start();
     }
 }
